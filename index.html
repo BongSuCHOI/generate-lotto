@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #lotto-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 42px
+        }
+
+        .lotto-number {
+            margin: 20px 0;
+        }
+
+        .lotto-number div {
+            position: relative;
+            padding: 15px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .lotto-number div:last-of-type {
+            margin-bottom: 0px;
+            border-bottom: none;
+        }
+
+        .lotto-number p {
+            display: flex;
+        }
+
+        .lotto-number p span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            margin: 0 5px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 50%;
+            border-width: 6px;
+            border-style: solid;
+        }
+
+        .lotto-number p span:nth-child(1) {
+            border-color: #ff4c4c;
+        }
+
+        .lotto-number p span:nth-child(2) {
+            border-color: #ff8e4f;
+        }
+
+        .lotto-number p span:nth-child(3) {
+            border-color: #fcd153;
+        }
+
+        .lotto-number p span:nth-child(4) {
+            border-color: #3cbcff;
+        }
+
+        .lotto-number p span:nth-child(5) {
+            border-color: #8d70da;
+        }
+
+        .lotto-number p span:nth-child(6) {
+            border-color: #777;
+        }
+
+        .remove-number-btn {
+            position: absolute;
+            right: -42px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            font-size: 16px;
+            border: none;
+            background-color: transparent;
+            color: #dc3545;
+        }
+
+        .create-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .raffle-btn {
+            width: 120px;
+            height: 40px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #0d6efd;
+            border-radius: 0.3rem;
+            border: none;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+        }
+
+        .raffle-btn:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+    </style>
+
+    <div id="lotto-wrapper">
+        <h1>로또 번호 추첨기</h1>
+        <div class="lotto-number"></div>
+        <div class="create-box">
+            <button type="button" class="raffle-btn" onclick="generateLotteryNumbers()">번호 생성</button>
+        </div>
+    </div>
+
+    <script>
+        const MAXIMUM_LENGTH = 6;
+
+        const pElem = document.querySelector('.lotto-number');
+
+        let numberArr = [];
+        let currNum;
+
+        const createRandomNumber = () => Math.floor(Math.random() * 45 + 1);
+
+        const deduplication = (arr) => Array.from(new Set(arr));
+
+        const generateLotteryNumbers = () => {
+            numberArr = [];
+
+            while (true) {
+                currNum = createRandomNumber();
+
+                if (numberArr.indexOf(currNum) === -1) {
+                    numberArr.push(currNum);
+                }
+
+                if (numberArr.length === MAXIMUM_LENGTH) {
+                    break;
+                }
+            }
+
+            const numberElem = numberArr.sort((a, b) => a - b).map(number => `<span>${number}</span>`).join('');
+
+            pElem.innerHTML += `
+                <div>
+                    <p>${numberElem}</p>
+                    <button type="button" class="remove-number-btn" onclick="removeNumber(this)">제거</button>
+                </div>
+            `;
+        };
+
+        const removeNumber = (trigger) => trigger.parentElement.remove();
+    </script>
+</body>
+
+</html>
